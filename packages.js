@@ -1,5 +1,6 @@
 // packages.js
-// Handles purchasing of membership packages. Packages are stored in localStorage under 'lawuTennisPurchasedPackages'.
+// Handles purchasing of membership packages. Packages are stored in localStorage under
+// 'lawuTennisPurchasedPackages'. Updated to use username instead of email for identifying users.
 
 document.addEventListener('DOMContentLoaded', () => {
   const currentUser = requireLogin();
@@ -19,7 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // Get purchased packages for current user
   const purchased = JSON.parse(localStorage.getItem('lawuTennisPurchasedPackages')) || [];
-  const purchasedNames = purchased.filter(p => !p.userEmail || p.userEmail === currentUser).map(p => p.name);
+  const purchasedNames = purchased
+    .filter(p => !p.username || p.username === currentUser)
+    .map(p => p.name);
   // Generate cards
   container.innerHTML = '';
   packageList.forEach(pkg => {

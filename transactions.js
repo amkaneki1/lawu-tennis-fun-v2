@@ -1,5 +1,6 @@
 // transactions.js
 // Handles display of user transactions and tab switching between Pending and Completed.
+// Updated to use username instead of email to identify users and to ensure admin can view all transactions.
 
 document.addEventListener('DOMContentLoaded', () => {
   const currentUser = requireLogin();
@@ -19,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isAdmin = !!profile.isAdmin;
     const filtered = transactions.filter(tx => {
       // If not admin, show only transactions belonging to current user
-      if (!isAdmin && tx.userEmail && tx.userEmail !== currentUser) {
+      if (!isAdmin && tx.username && tx.username !== currentUser) {
         return false;
       }
       if (currentTab === 'Pending') return tx.status === 'Pending Payment';
@@ -38,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.innerHTML = `
         <p><strong>ID:</strong> ${tx.id}</p>
         <p><strong>Date:</strong> ${tx.date}</p>
-        <p><strong>User:</strong> ${tx.userEmail || '-'}</p>
+        <p><strong>User:</strong> ${tx.username || '-'}</p>
         <p><strong>Item:</strong> ${tx.item}</p>
         <p><strong>Status:</strong> ${tx.status}</p>
         <p><strong>Price:</strong> ${tx.price}</p>
@@ -106,7 +107,7 @@ function markTransactionPaid(id) {
   if (idx !== -1) {
     transactions[idx].status = 'Paid';
     localStorage.setItem('lawuTennisTransactions', JSON.stringify(transactions));
-    // Refresh view
+    // Refresh view by triggering pending tab click
     document.getElementById('pendingTab').click();
   }
 }
@@ -121,11 +122,11 @@ function deleteTransaction(id) {
   // Remove associated booking/package
   if (tx.type === 'class') {
     let bookings = JSON.parse(localStorage.getItem('lawuTennisBookings')) || [];
-    bookings = bookings.filter(b => !(b.title === tx.item && b.userEmail === tx.userEmail));
+    bookings = bookings.filter(b => !(b.title === tx.item && b.username === tx.username));
     localStorage.setItem('lawuTennisBookings', JSON.stringify(bookings));
   } else if (tx.type === 'package') {
     let purchased = JSON.parse(localStorage.getItem('lawuTennisPurchasedPackages')) || [];
-    purchased = purchased.filter(p => !(p.name === tx.item && p.userEmail === tx.userEmail));
+    purchased = purchased.filter(p => !(p.name === tx.item && p.username === tx.username));
     localStorage.setItem('lawuTennisPurchasedPackages', JSON.stringify(purchased));
   }
   transactions.splice(txIndex, 1);

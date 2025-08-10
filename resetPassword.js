@@ -1,17 +1,17 @@
 // resetPassword.js
-// Handles resetting password for a user.
+// Handles resetting password for a user using the username.
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('resetForm');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const email = document.getElementById('resetEmail').value.trim();
+    const username = document.getElementById('resetUsername').value.trim();
     const newPass = document.getElementById('resetPassword').value;
-    if (!email || !newPass) {
-      alert('Please enter both email and new password.');
+    if (!username || !newPass) {
+      alert('Please enter both username and new password.');
       return;
     }
-    const err = resetPassword(email, newPass);
+    const err = resetPassword(username, newPass);
     if (err) {
       alert(err);
       return;

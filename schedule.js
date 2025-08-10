@@ -1,7 +1,5 @@
 // schedule.js
-// This file implements a more flexible class schedule similar to the Flou Pilates site.
-// It shows a list of tennis sessions per date, allows booking available sessions,
-// and joining a waiting list for full sessions. All data is stored in localStorage.
+// Implements a flexible class schedule similar to the Flou Pilates site. Updated to track bookings by username.
 
 // Utility to format dates as YYYY-MM-DD
 function formatDate(date) {
@@ -13,7 +11,7 @@ function formatDate(date) {
 
 // Load sessions from localStorage and filter them by date. If no session data
 // exists, returns an empty array. Sessions are objects with an id, date,
-// time, duration (minutes), title, coach, location, gender, and maxSlots.
+// time, duration (minutes), title, coach, location, and maxSlots.
 function getSessionsForDate(dateStr) {
   let allSessions = JSON.parse(localStorage.getItem('lawuTennisSessions')) || [];
   // If there are no sessions defined, seed with two default sessions for today
@@ -28,7 +26,6 @@ function getSessionsForDate(dateStr) {
       title: 'Morning Tennis Drills',
       coach: 'Coach Andi',
       location: 'Court 1',
-      // Gender removed (no longer used)
       maxSlots: 8,
       price: 150000
     });
@@ -40,7 +37,6 @@ function getSessionsForDate(dateStr) {
       title: 'Serve & Return Workshop',
       coach: 'Coach Siti',
       location: 'Court 2',
-      gender: 'All Gender',
       maxSlots: 8,
       price: 150000
     });
@@ -58,12 +54,12 @@ function renderSchedule(dateStr) {
   // Load all bookings to determine if the user has already booked a session and to calculate spots left
   const bookings = JSON.parse(localStorage.getItem('lawuTennisBookings')) || [];
   const currentUser = localStorage.getItem('lawuTennisCurrentUser');
-  sessions.forEach((sess, index) => {
+  sessions.forEach((sess) => {
     // Determine booked count and whether current user already booked this session
     const sessionBookings = bookings.filter(b => b.sessionId === sess.id);
     const bookedCount = sessionBookings.length;
     const isFull = sess.maxSlots !== undefined && bookedCount >= sess.maxSlots;
-    const userHasBooked = sessionBookings.some(b => b.userEmail === currentUser);
+    const userHasBooked = sessionBookings.some(b => b.username === currentUser);
     let spotsLabel = '';
     if (isFull) {
       spotsLabel = 'Full';
@@ -107,7 +103,6 @@ function renderSchedule(dateStr) {
         title: sess.title,
         coach: sess.coach,
         location: sess.location,
-        // gender removed from detail object
         maxSlots: sess.maxSlots,
         price: sess.price || null
       };

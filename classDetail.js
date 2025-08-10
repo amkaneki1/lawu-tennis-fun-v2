@@ -1,5 +1,5 @@
 // classDetail.js
-// Handles display of a single class and booking/waitlist actions.
+// Handles display of a single class and booking/waitlist actions. Updated to use username.
 
 document.addEventListener('DOMContentLoaded', () => {
   const currentUser = requireLogin();
@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const classInfoEl = document.getElementById('classInfo');
   const classActionsEl = document.getElementById('classActions');
   const titleEl = document.getElementById('classTitle');
-
   // Retrieve the selected class from sessionStorage; this is set by schedule.js when the user
   // clicks a "Detail" or "Waiting List" button.
   const selectedClassStr = sessionStorage.getItem('selectedClass');
@@ -18,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const session = JSON.parse(selectedClassStr);
   // Set header title
   titleEl.textContent = session.title;
-
   // Build class information markup similar to floupilates detail page
   const infoList = document.createElement('div');
   infoList.className = 'detail-list';
@@ -28,18 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
     <p><strong>Duration:</strong> ${session.duration} minutes</p>
     <p><strong>Location:</strong> ${session.location}</p>
     <p><strong>Instructor:</strong> ${session.coach}</p>
-    <!-- Gender removed per requirements -->
     <p><strong>Price:</strong> ${session.price !== null && session.price !== undefined ? 'Rp ' + numberWithCommas(session.price) : 'Free'}</p>
   `;
   classInfoEl.appendChild(infoList);
-
   // Determine booking status and full status from localStorage
   const bookings = JSON.parse(localStorage.getItem('lawuTennisBookings')) || [];
   const sessionBookings = bookings.filter(b => b.sessionId === session.id);
-  const isBooked = sessionBookings.some(b => b.userEmail === currentUser);
+  const isBooked = sessionBookings.some(b => b.username === currentUser);
   const maxSlots = session.maxSlots;
   const isFull = maxSlots !== undefined && sessionBookings.length >= maxSlots;
-
   // Input for promo code
   const promoContainer = document.createElement('div');
   promoContainer.className = 'promo-container';
@@ -60,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
   promoContainer.appendChild(promoInput);
   promoContainer.appendChild(promoCheckBtn);
   classActionsEl.appendChild(promoContainer);
-
   // Button to perform booking
   const actionBtn = document.createElement('button');
   actionBtn.className = 'btn';
@@ -82,13 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
       // Ensure bookings is an array (migrated from earlier object format)
       let bookingsArr = JSON.parse(localStorage.getItem('lawuTennisBookings')) || [];
       // Avoid duplicate booking
-      if (!bookingsArr.some(b => b.sessionId === session.id && b.userEmail === currentUser)) {
+      if (!bookingsArr.some(b => b.sessionId === session.id && b.username === currentUser)) {
         bookingsArr.push({
           sessionId: session.id,
           date: session.date,
           time: session.time,
           title: session.title,
-          userEmail: currentUser
+          username: currentUser
         });
         localStorage.setItem('lawuTennisBookings', JSON.stringify(bookingsArr));
       }
@@ -105,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         status: 'Pending Payment',
         due: dueDate.toISOString(),
         type: 'class',
-        userEmail: currentUser
+        username: currentUser
       });
       localStorage.setItem('lawuTennisTransactions', JSON.stringify(transactions));
       // Redirect to transaction detail page
@@ -113,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   classActionsEl.appendChild(actionBtn);
-
   // Helper to format price
   function numberWithCommas(x) {
     if (x === null || x === undefined) return '';

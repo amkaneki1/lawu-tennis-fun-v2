@@ -1,5 +1,6 @@
 // home.js
-// This script populates the summary information on the home page for bookings and waiting list.
+// This script populates the summary information on the home page for bookings and promotions.
+// Updated to use username instead of email.
 
 document.addEventListener('DOMContentLoaded', () => {
   const currentUser = requireLogin();
@@ -17,9 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     Object.keys(rawBookings).forEach(date => {
       (rawBookings[date] || []).forEach(item => {
         if (typeof item === 'string') {
-          bookingsArr.push({ date, time: item, userEmail: currentUser });
+          bookingsArr.push({ date, time: item, username: currentUser });
         } else {
-          bookingsArr.push({ date, time: item.time, userEmail: item.userEmail || currentUser });
+          bookingsArr.push({ date, time: item.time, username: item.username || currentUser });
         }
       });
     });
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   let bookingCount = 0;
   bookingsArr.forEach(b => {
-    if (!b.userEmail || b.userEmail === currentUser) bookingCount++;
+    if (!b.username || b.username === currentUser) bookingCount++;
   });
   if (bookingCount > 0) {
     bookingsSummaryEl.textContent = `You have ${bookingCount} upcoming booking${bookingCount > 1 ? 's' : ''}.`;

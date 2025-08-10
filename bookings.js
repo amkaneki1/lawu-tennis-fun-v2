@@ -1,4 +1,5 @@
 // Script to display a list of booked sessions stored in localStorage.
+// Updated to use username instead of email to identify bookings.
 
 document.addEventListener('DOMContentLoaded', () => {
   const currentUser = requireLogin();
@@ -6,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const bookingsList = document.getElementById('bookingsList');
   if (!bookingsList) return;
   // Retrieve stored bookings from localStorage. We support two formats:
-  // (1) New format: an array of booking objects { sessionId, date, time, title, userEmail }
+  // (1) New format: an array of booking objects { sessionId, date, time, title, username }
   // (2) Legacy format: an object keyed by date -> array of session info
   const rawBookings = JSON.parse(localStorage.getItem('lawuTennisBookings')) || [];
   let bookingsArr = [];
@@ -18,9 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
       (rawBookings[date] || []).forEach(session => {
         if (typeof session === 'string') {
           // Strings represent time only; assume belongs to current user and unknown title
-          bookingsArr.push({ date, time: session, title: '', userEmail: currentUser });
+          bookingsArr.push({ date, time: session, title: '', username: currentUser });
         } else {
-          bookingsArr.push({ date, time: session.time, title: session.title || '', userEmail: session.userEmail || currentUser });
+          bookingsArr.push({ date, time: session.time, title: session.title || '', username: session.username || currentUser });
         }
       });
     });
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const items = [];
   bookingsArr.forEach(b => {
-    if (!b.userEmail || b.userEmail === currentUser) {
+    if (!b.username || b.username === currentUser) {
       items.push({ date: b.date, time: b.time, title: b.title || '' });
     }
   });

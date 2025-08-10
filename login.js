@@ -1,5 +1,5 @@
 // login.js
-// Handles user login on the login page.
+// Handles user login on the login page using usernames.
 
 document.addEventListener('DOMContentLoaded', () => {
   // If already logged in, redirect to home
@@ -11,13 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('loginForm');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim();
+    const username = document.getElementById('loginUsername').value.trim();
     const password = document.getElementById('loginPassword').value;
-    if (!email || !password) {
-      alert('Please enter both email and password.');
+    if (!username || !password) {
+      alert('Please enter both username and password.');
       return;
     }
-    const err = loginUser(email, password);
+    const err = loginUser(username, password);
     if (err) {
       alert(err);
       return;

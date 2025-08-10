@@ -1,5 +1,6 @@
 // packageDetail.js
 // Displays the details of a selected package and handles checkout/purchase.
+// Updated to use username instead of email when storing purchase and transaction data.
 
 function getQueryParam(param) {
   const urlParams = new URLSearchParams(window.location.search);
@@ -20,30 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let packages = JSON.parse(localStorage.getItem('lawuTennisPackages')) || [];
   if (packages.length === 0) {
     packages = [
-      {
-        id: 'pkg-' + Date.now(),
-        name: 'Single Session',
-        price: 100000,
-        expiry: 'Valid for 1 session',
-        description: 'One practice session whenever you need a quick workout.',
-        type: 'Public'
-      },
-      {
-        id: 'pkg-' + (Date.now() + 1),
-        name: 'Weekly Plan',
-        price: 250000,
-        expiry: 'Valid for 1 week (up to 3 sessions)',
-        description: 'Up to 3 practice sessions per week to keep you fit and sharp.',
-        type: 'Public'
-      },
-      {
-        id: 'pkg-' + (Date.now() + 2),
-        name: 'Monthly Membership',
-        price: 900000,
-        expiry: 'Valid for 1 month (unlimited sessions)',
-        description: 'Unlimited sessions for a month—perfect for serious players.',
-        type: 'Public'
-      }
+      { id: 'pkg-' + Date.now(), name: 'Single Session', price: 100000, expiry: 'Valid for 1 session', description: 'One practice session whenever you need a quick workout.', type: 'Public' },
+      { id: 'pkg-' + (Date.now() + 1), name: 'Weekly Plan', price: 250000, expiry: 'Valid for 1 week (up to 3 sessions)', description: 'Up to 3 practice sessions per week to keep you fit and sharp.', type: 'Public' },
+      { id: 'pkg-' + (Date.now() + 2), name: 'Monthly Membership', price: 900000, expiry: 'Valid for 1 month (unlimited sessions)', description: 'Unlimited sessions for a month—perfect for serious players.', type: 'Public' }
     ];
     localStorage.setItem('lawuTennisPackages', JSON.stringify(packages));
   }
@@ -57,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // Display package details
   titleEl.textContent = pkg.name;
-  // Format price with thousand separators
   const priceText = 'Rp ' + pkg.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   contentEl.innerHTML = `
     <h2>${pkg.name}</h2>
@@ -67,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
   // Check if already purchased by current user
   const purchased = JSON.parse(localStorage.getItem('lawuTennisPurchasedPackages')) || [];
-  const alreadyPurchased = purchased.some(p => p.name === pkg.name && (!p.userEmail || p.userEmail === currentUser));
+  const alreadyPurchased = purchased.some(p => p.name === pkg.name && (!p.username || p.username === currentUser));
   if (alreadyPurchased) {
     messageEl.textContent = 'You have already purchased this package.';
     messageSection.style.display = 'block';
@@ -78,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkoutBtn.addEventListener('click', () => {
       // Add package to purchased list for user
       const current = JSON.parse(localStorage.getItem('lawuTennisPurchasedPackages')) || [];
-      current.push({ name: pkg.name, expiry: pkg.expiry, userEmail: currentUser });
+      current.push({ name: pkg.name, expiry: pkg.expiry, username: currentUser });
       localStorage.setItem('lawuTennisPurchasedPackages', JSON.stringify(current));
       // Create transaction object for payment with due date in 24 hours
       const transactions = JSON.parse(localStorage.getItem('lawuTennisTransactions')) || [];
@@ -93,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         status: 'Pending Payment',
         due: dueDate.toISOString(),
         type: 'package',
-        userEmail: currentUser
+        username: currentUser
       });
       localStorage.setItem('lawuTennisTransactions', JSON.stringify(transactions));
       // Redirect to transaction detail page for payment proof upload

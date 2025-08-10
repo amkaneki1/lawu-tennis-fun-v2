@@ -1,5 +1,6 @@
 // transactionDetail.js
 // Displays details of a single transaction including due date countdown and payment info.
+// Updated to use username instead of email when verifying transaction ownership.
 
 function getQueryParam(param) {
   const urlParams = new URLSearchParams(window.location.search);
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const transactions = JSON.parse(localStorage.getItem('lawuTennisTransactions')) || [];
   const tx = transactions.find(t => t.id === id);
   // Ensure the transaction belongs to current user (or no user specified)
-  if (!tx || (tx.userEmail && tx.userEmail !== currentUser)) {
+  if (!tx || (tx.username && tx.username !== currentUser)) {
     detailEl.innerHTML = '<p class="message">Transaction not found.</p>';
     return;
   }
@@ -31,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     countdownStr = 'Expired';
   }
-
   const html = document.createElement('div');
   html.className = 'transaction-detail-card';
   // Retrieve user profile for displaying name
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <p><strong>Item:</strong> ${tx.item}</p>
     <p><strong>Price:</strong> ${tx.price}</p>
     <p><strong>Status:</strong> ${tx.status}</p>
-    <p><strong>Payment Due:</strong> ${dueDate.toLocaleString()}</p>
+    <p><strong>Payment Due:</strong> ${new Date(tx.due).toLocaleString()}</p>
     <p><strong>Time Remaining:</strong> ${countdownStr}</p>
     <h3>Payment Method</h3>
     <p>Bank Transfer (Mandiri) a/n Lawu Tennis Fun</p>
@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
   // Append the detail card to the page (without upload fields)
   detailEl.appendChild(html);
-
   // Payment proof form
   const paymentSection = document.getElementById('paymentSection');
   // Only show the upload form if the transaction is still pending
