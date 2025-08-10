@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const items = [];
   bookingsArr.forEach(b => {
-    if (!b.username || b.username === currentUser) {
+    if b(.username === currentUsertUser) {
       items.push({ date: b.date, time: b.time, title: b.title || '' });
     }
   });
