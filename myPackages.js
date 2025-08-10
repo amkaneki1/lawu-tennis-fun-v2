@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!listEl) return;
   const packagesData = JSON.parse(localStorage.getItem('lawuTennisPurchasedPackages')) || [];
   // Filter packages for current user
-  const userPackages = packagesData.filter(pkg => !pkg.userEmail || pkg.userEmail === currentUser);
+ const userPackages = packagesData.filter(pkg => pkg.userEmail === currentUser);
   if (userPackages.length === 0) {
     const msg = document.createElement('p');
     msg.className = 'message';
