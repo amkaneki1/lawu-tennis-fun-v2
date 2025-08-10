@@ -51,9 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     // Attempt to register the new user. Ensure isAdmin false so the user becomes a standard customer.
-    const err = registerUser(username, password, { fullName: fullName, phone: phone, isAdmin: false });
-    if (err) {
-      alert(err);
+    // Attempt to register the new user. registerUser returns true on
+    // success and false if the username already exists. It will show its own
+    // alert on failure, so just exit early in that case.
+    const success = registerUser(username, password, {
+      fullName: fullName,
+      phone: phone,
+      isAdmin: false
+    });
+    if (!success) {
       return;
     }
     // Clear form and hide it

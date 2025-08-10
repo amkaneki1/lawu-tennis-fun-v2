@@ -17,9 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Please enter both username and password.');
       return;
     }
-    const err = loginUser(username, password);
-    if (err) {
-      alert(err);
+    // Attempt to log in the user. loginUser returns true on success and
+    // false on failure. It will show its own alert when credentials are
+    // invalid, so we only need to check the return value here.
+    const success = loginUser(username, password);
+    if (!success) {
+      // loginUser already displayed an error message for invalid credentials
       return;
     }
     // Successful login

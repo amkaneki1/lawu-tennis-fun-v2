@@ -20,9 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     // When registering a user, pass phone number along with full name
-    const err = registerUser(username, password, { fullName: name, phone });
-    if (err) {
-      alert(err);
+    // Attempt to register the user. registerUser returns true on success and
+    // false on failure. When it fails it will alert the user (e.g., username
+    // already exists), so simply return in that case.
+    const success = registerUser(username, password, { fullName: name, phone });
+    if (!success) {
       return;
     }
     // Automatically log in the user

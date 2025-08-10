@@ -11,9 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Please enter both username and new password.');
       return;
     }
-    const err = resetPassword(username, newPass);
-    if (err) {
-      alert(err);
+    // Attempt to reset the password. resetPassword returns true on success
+    // and false if the username does not exist. Show an error when it fails.
+    const success = resetPassword(username, newPass);
+    if (!success) {
+      alert('Username not found.');
       return;
     }
     alert('Password reset successful! You can now log in with your new password.');
