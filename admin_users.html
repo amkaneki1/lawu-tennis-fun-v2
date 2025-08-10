@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manajemen Pengguna – Lawu Tennis Fun</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="beige-bg">
+  <div class="main-card">
+    <header class="inner-header">
+      <a href="admin_dashboard.html" class="back-link">← Kembali</a>
+      <h1>Manajemen Pengguna</h1>
+    </header>
+    <section class="section">
+      <h2>Daftar Pengguna</h2>
+      <button id="addUserBtn" class="btn" style="margin-bottom: 15px;">Tambah Pengguna</button>
+      <div id="addUserFormContainer" style="display:none; margin-bottom: 20px;">
+        <form id="addUserForm" class="admin-user-form" style="display:flex; flex-direction: column; gap:12px;">
+          <div>
+            <label for="newUserFullName">Nama Lengkap</label>
+            <input type="text" id="newUserFullName" required />
+          </div>
+          <div>
+            <label for="newUserEmail">Email</label>
+            <input type="email" id="newUserEmail" required />
+          </div>
+          <div>
+            <label for="newUserPhone">Nomor WhatsApp</label>
+            <input type="tel" id="newUserPhone" required />
+          </div>
+          <div>
+            <label for="newUserPassword">Password</label>
+            <input type="password" id="newUserPassword" required />
+          </div>
+          <button type="submit" class="btn" style="width:fit-content; align-self:flex-start;">Simpan Pengguna</button>
+        </form>
+      </div>
+      <table id="usersTable" style="width:100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="border: 1px solid #ddd; padding: 8px;">Nama</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Email</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">WhatsApp</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Peran</th>
+          </tr>
+        </thead>
+        <tbody id="usersBody">
+        </tbody>
+      </table>
+    </section>
+  </div>
+  <script src="auth.js"></script>
+  <script src="admin_users.js"></script>
+</body>
+</html>

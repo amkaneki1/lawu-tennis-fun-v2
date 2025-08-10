@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – Lawu Tennis Fun</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="beige-bg">
+  <div class="main-card auth-card">
+    <h1 class="logo" style="text-align:center;">LAWU</h1>
+    <span class="subtitle" style="display:block;text-align:center;margin-bottom:20px;">Tennis Fun</span>
+    <h2 class="auth-title">Login to Lawu Tennis Fun</h2>
+    <form id="loginForm" class="auth-form">
+      <label for="loginEmail">Email</label>
+      <input type="email" id="loginEmail" placeholder="Your email" required />
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" placeholder="Your password" required />
+      <button type="submit" class="btn" style="width:100%;margin-top:15px;">Log In</button>
+    </form>
+    <p class="auth-note">Don't have an account? <a href="signup.html">Sign Up</a></p>
+    <p class="auth-note">Forgot your password? <a href="reset_password.html">Reset your password</a></p>
+  </div>
+  <script src="auth.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

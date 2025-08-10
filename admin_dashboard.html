@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard – Lawu Tennis Fun</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="beige-bg">
+  <div class="main-card">
+    <header class="inner-header">
+      <a href="profile.html" class="back-link">← Kembali</a>
+      <h1>Dasbor Admin</h1>
+    </header>
+    <section class="section">
+      <h2>Manajemen</h2>
+      <div class="card-list">
+        <div class="card-item">
+          <h3>Manajemen Pengguna</h3>
+          <p>Lihat dan kelola pengguna terdaftar.</p>
+          <a href="admin_users.html" class="btn">Buka</a>
+        </div>
+        <div class="card-item">
+          <h3>Manajemen Jadwal</h3>
+          <p>Buat dan edit sesi latihan.</p>
+          <a href="admin_schedule.html" class="btn">Buka</a>
+        </div>
+        <div class="card-item">
+          <h3>Manajemen Paket</h3>
+          <p>Definisikan paket keanggotaan.</p>
+          <a href="admin_packages.html" class="btn">Buka</a>
+        </div>
+        <div class="card-item">
+          <h3>Transaksi</h3>
+          <p>Tinjau dan perbarui status transaksi.</p>
+          <a href="transactions.html" class="btn">Buka</a>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="auth.js"></script>
+  <script>
+    // Only allow access if admin
+    document.addEventListener('DOMContentLoaded', () => {
+      requireAdmin();
+    });
+  </script>
+</body>
+</html>
